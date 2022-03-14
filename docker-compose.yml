@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  otexmlparser:
+    image: otexmlparser
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/app
