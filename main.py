@@ -11,17 +11,13 @@ import xml.etree.ElementTree as et
 from datetime import date
 
 # Class for object of OPM
-
-
 class OPM:
     def __init__(self, ean):
         self.ean = ean
         self.output_quantity = 0
         self.input_quantity = 0
 
-
 class Parser:
-
     # Object constructor
     def __init__(self, from_dir, to_dir, year, month):
         self.from_dir = from_dir
@@ -117,8 +113,6 @@ def getMonthText(num_of_month):
     }
     return months[num_of_month]
 
-
-
 def main():
     # Get arguments from command line
     today = date.today()
@@ -136,8 +130,6 @@ def main():
 
     parser = Parser(data_folder, data_folder, year, month)
     parser.createXLSX()
-
-
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
