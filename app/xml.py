@@ -10,12 +10,14 @@ import pandas as pd
 import xml.etree.ElementTree as et
 from datetime import date
 
+
 # Class for object of OPM
 class OPM:
     def __init__(self, ean):
         self.ean = ean
         self.output_quantity = 0
         self.input_quantity = 0
+
 
 class Parser:
     # Object constructor
@@ -24,7 +26,6 @@ class Parser:
         self.to_dir = to_dir
         self.year = year
         self.month = month
-        self.file_list = self.getFilesFromFolder()
         self.data_frame = self.createEmptyDataFrame()
         self.output_file_name = f"{self.year}_{self.month}.output_data.xlsx"
 
@@ -61,39 +62,47 @@ class Parser:
 
     # Main parser function
     def parseXML(self):
-        for file in self.file_list:
-            tree = et.ElementTree(file=file)
+        file_list = self.getFilesFromFolder()
+
+        for item in file_list:
+            print(item)
+            print('něco')
+            tree = et.ElementTree(file=item)
             root = tree.getroot()
 
-            # Get all locations from XML root
-            locations = list(root)
+            try:
+                # Get all locations from XML root
+                locations = list(root)
 
-            # Loop through all Locations
-            for location in locations:
-                ean = location.get('opm-id')
-                if not ean:
-                    continue
+                # Loop through all Locations
+                for location in locations:
+                    ean = location.get('opm-id')
+                    if not ean:
+                        continue
 
-                # Define OPM object
-                opm = OPM(ean)
+                    # Define OPM object
+                    opm = OPM(ean)
 
-                # Get all DataProfiles from location
-                DataProfile = list(location)
+                    # Get all DataProfiles from location
+                    DataProfile = list(location)
 
-                # Loop through all DataProdiles
-                for value_type in DataProfile:
+                    # Loop through all DataProdiles
+                    for value_type in DataProfile:
 
-                    # Find value type and loop through all values
-                    if value_type.get('value-type') == "A11":
-                        opm.output_quantity = self.sumValues(list(value_type))
+                        # Find value type and loop through all values
+                        if value_type.get('value-type') == "A11":
+                            opm.output_quantity = self.sumValues(
+                                list(value_type))
 
-                    if value_type.get('value-type') == "A12":
-                        opm.input_quantity = self.sumValues(list(value_type))
+                        if value_type.get('value-type') == "A12":
+                            opm.input_quantity = self.sumValues(
+                                list(value_type))
 
-                self.data_frame = self.data_frame.append(
-                    {'EAN': opm.ean, 
-                    'Dodavka': opm.output_quantity, 
-                    'Odber': self.convertToNegative(value=opm.input_quantity)
-                    }, ignore_index=True)
+                    self.data_frame = self.data_frame.append(
+                        {'EAN': opm.ean,
+                         'Dodavka': opm.output_quantity,
+                         'Odber': self.convertToNegative(value=opm.input_quantity)
+                         }, ignore_index=True)
 
-            return
+            except BaseException as e:
+                print(e)

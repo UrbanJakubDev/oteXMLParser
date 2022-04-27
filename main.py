@@ -11,7 +11,6 @@ import xml.etree.ElementTree as et
 from datetime import date
 from app.xml import Parser
 
-
 def getMonthText(num_of_month):
     months = {
         1: "Leden",
@@ -29,9 +28,8 @@ def getMonthText(num_of_month):
     }
     return months[num_of_month]
 
-
-
 def main():
+    
     # Get arguments from command line
     today = date.today()
 
@@ -46,7 +44,9 @@ def main():
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     data_folder = os.path.join(ROOT_DIR, f"data/_Pracovní {year}/01_OTE/Data/{month}/")
 
+    print('Init parser')
     parser = Parser(data_folder, data_folder, year, month)
+
     parser.createXLSX()
 
 # Press the green button in the gutter to run the script.
