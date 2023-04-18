@@ -44,8 +44,11 @@ def main():
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     data_folder = os.path.join(ROOT_DIR, f"data/_Pracovní {year}/01_OTE/Data/{month}/")
 
+    # Ipnut directory path
+    input_folder = f'D:/OneDrive - ČEZ Energo, s.r.o/_Pracovní {year}/01_OTE/Data/{month}'
+
     print('Init parser')
-    parser = Parser(data_folder, data_folder, year, month)
+    parser = Parser(input_folder, input_folder, year, month)
 
     parser.createXLSX()
 

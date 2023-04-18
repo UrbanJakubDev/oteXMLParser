@@ -27,12 +27,13 @@ class Parser:
         self.year = year
         self.month = month
         self.data_frame = self.createEmptyDataFrame()
-        self.output_file_name = f"{self.year}_{self.month}.output_data.xlsx"
+        self.output_file_name = f"{self.year}_{self.month}_output_data.xlsx"
 
     # Save data to excel file
     def createXLSX(self):
         self.parseXML()
         save_dir = os.path.join(self.to_dir, self.output_file_name)
+        print(save_dir)
         self.data_frame.to_excel(save_dir, index=False)
 
     # Get absolute paths of all files in folder
@@ -65,8 +66,6 @@ class Parser:
         file_list = self.getFilesFromFolder()
 
         for item in file_list:
-            print(item)
-            print('něco')
             tree = et.ElementTree(file=item)
             root = tree.getroot()
 
